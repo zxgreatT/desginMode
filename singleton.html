@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn">登录</button>
+    <script>
+        //单例模式的主要思想 如果实例已经被创建返回它 如果没有 直接返回
+        class Login{
+            createLayout(){
+                const oDiv = document.createElement('div')
+                oDiv.innerHTML = '我是输入框'
+                document.body.appendChild(oDiv)
+                oDiv.style.display = 'none'
+                return oDiv
+            }
+        }
+        class Single{
+            getSingle(fn){
+                let result
+                return function(){
+                    console.log(result)
+                    return result || (result = fn.apply(this,arguments))
+                }
+            }
+        }
+        const oBtn = document.getElementById('btn')
+        const single = new Single()
+        const login = new Login()
+        const createLoginLayer = single.getSingle(login.createLayout)
+        oBtn.onclick = function(){
+            const layout = createLoginLayer()
+            layout.style.display = 'block'
+        }
+    </script>
+</body>
+</html>

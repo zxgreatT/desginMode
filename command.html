@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button id='btn1'>按钮1</button>
+    <button id='btn2'>按钮2</button>
+    <button id='btn3'>按钮3</button>
+    <script>
+        var btn1 = document.getElementById('btn1')
+        var btn2 = document.getElementById('btn2')
+        var btn3 = document.getElementById('btn3')
+        //命令发布者类
+        class Executor{
+            setCommand(btn,command){
+                btn.onclick = function(){
+                    command.execute()
+                }
+            }
+        }
+        //命令接收者
+        class Menu {
+            refresh(){
+                console.log('刷新按钮')
+            }
+            addSubMenu(){
+                console.log('增加字菜单')
+            }
+        }
+        //定义刷新菜单的命令对象类
+        class RefMenu {
+            constructor(receiver){
+                //命令对象与接收者关联
+                this.receiver = receiver
+            }
+            //暴露出统一的接口给命令发布者Executer
+            execute(){
+                this.receiver.refresh()
+            }
+        }
+        //定义一个增加子菜单的命令对象
+        class AddSubMenu {
+            constructor(receiver){
+                this.receiver = receiver
+            }
+            execute(){
+                this.receiver.addSubMenu()
+            }
+        }
+        var menu = new Menu()
+        var executor = new Executor()
+        var refMenu = new RefMenu(menu)
+        //测试刷新功能
+        executor.setCommand(btn1,refMenu)
+        var addSubMenu = new AddSubMenu(menu)
+        //测试增加子菜单功能
+        executor.setCommand(btn2,addSubMenu)
+    </script>
+</body>
+
+</html>
